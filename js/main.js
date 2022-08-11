@@ -3,13 +3,20 @@ const elPokemonList = document.querySelector('.pakemon__box-list')
 const elPokemonTemp = document.querySelector('.pakemon__template').content
 const elPokemonCount = document.querySelector('.count')
 const elPokemonForm = document.querySelector('.pakemon__box-form')
+const elFormName = document.querySelector('.pakemon__box-form-input')
 const elFormHeight = document.querySelector('#height')
 const elFormWeight = document.querySelector('#weight')
 const elFormSelect = document.querySelector('#pakemon__select')
 const elFormSorting = document.querySelector('#pakemon__sort')
+const elBookmarkWrapper = document.querySelector('.bookmark-box')
+const elBookmarkTemp = document.querySelector('.bookmark__template').content
+const elBookmarkList = document.querySelector('.bookmark__list')
 
 
-const pakemonsArray = pokemons
+const pakemonsArray = pokemons.splice(0, 70)
+
+let bookmarkedPokemon = []
+
 
 
 // normalizedArray
@@ -44,6 +51,8 @@ function renderPokemon(array, wrapper) {
         newTemplate.querySelector('.type').textContent = item.type,
         newTemplate.querySelector('.height').textContent = item.height,
         newTemplate.querySelector('.weight').textContent = item.weight,
+        newTemplate.querySelector('.pakemon__box-item-bookmark').dataset.bookmarkId = item.id
+        
 
         pokemonFragment.append(newItem)
         
@@ -91,14 +100,20 @@ function renderTypes(array, wrapper) {
 }
 renderTypes(typesArray, elFormSelect)
 
+let = SearchNameArray = []
+
 //Form search btn
 elPokemonForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
+
+    const searchName = elFormName.value.trim();
     const formWeight = elFormWeight.value.trim();
     const formHeight = elFormHeight.value.trim();
     const formSelect = elFormSelect.value.trim();
+    
 
+    
     let isTrue 
 
     const filteredPokemon = normalizedPokemons.filter( item => {
@@ -113,11 +128,82 @@ elPokemonForm.addEventListener('submit', function(event) {
         return validation
     })
 
-    if(elFormSorting.value == 'height__low-high') {
-        filteredPokemon.sort(function(a, b) {
-           console.log(a.height - b.height);
-        })
-    }
 
-    renderPokemon(filteredPokemon, elPokemonList)
+let userName = []
+
+function userReg(array) {
+    array.forEach(item => {
+
+        let pattern = RegExp(`${searchName}`, `gi`);
+
+        if(item.name.match(pattern)) {
+            userName.push(item)
+        }
+    })
+    renderPokemon(userName, elPokemonList)
+}
+userReg(filteredPokemon)
+
 })
+
+// Bookmark
+elPokemonList.addEventListener("click", function (evt) { 
+    let currentBookmarkId = evt.target.dataset.bookmarkId;
+
+    if (currentBookmarkId) {
+        let foundPokemon = normalizedPokemons.find(function(item) {
+            return item.id == currentBookmarkId
+        })
+        
+        if(bookmarkedPokemon.length == 0) {
+            bookmarkedPokemon.unshift(foundPokemon)
+        }else{
+            let isPokemonInArray = bookmarkedPokemon.find(function(item) {
+                return item.name == foundPokemon.name
+            }) 
+            
+            if (!isPokemonInArray) {
+                bookmarkedPokemon.unshift(foundPokemon)
+            }
+        }
+        
+        renderBookmarks(bookmarkedPokemon)
+    }
+})
+
+
+function renderBookmarks(arrayOfMovies) {
+    elBookmarkList.innerHTML = null
+    
+    let fragment = document.createDocumentFragment();
+    
+    for (const item of arrayOfMovies) {
+        let bookmarkItem = elBookmarkTemp.cloneNode(true);
+        
+        bookmarkItem.querySelector(".bookmark-box__title").textContent = item.name;
+        bookmarkItem.querySelector(".bookmark-box__removebtn").dataset.bookmarkedId = item.id;
+        
+        fragment.appendChild(bookmarkItem);
+    }
+    
+    elBookmarkList.appendChild(fragment)
+}
+
+
+elBookmarkList.addEventListener("click", function (evt) {
+    let bookmarkedPkemonId = evt.target.dataset.bookmarkedId
+    
+    if (bookmarkedPkemonId) {
+        let foundBookmarkedPokemon = bookmarkedPokemon.findIndex(function(item) {
+            return item.id == bookmarkedPkemonId
+        })
+        
+        bookmarkedPokemon.splice(foundBookmarkedPokemon, 1);
+    }
+    renderBookmarks(bookmarkedPokemon);
+})
+
+
+
+
+

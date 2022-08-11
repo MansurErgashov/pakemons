@@ -41,7 +41,15 @@
 
                 <button type="submit" class="btn btn-success mt-4">Search</button>
 
+                <ul class="bookmark__list">
+                    <!-- <div class="bookmark-box border border-secondary border-2 text ps-3 pb-2 pt-3 mt-3">
+                    <h3 class="bookmark-box__title m-0 p-0">bookmark title</h3>
+
+                    <button class="bookmark-box__removebtn btn btn-danger mt-1" type="submit">Remove</button>
+                </div> -->
+                </ul>
             </form>
+
 
             <div class="pakemon__box-list col-md-8  list-unstyled col-sm-6 col-12 d-xl-flex justify-content-around flex-wrap">
 
@@ -75,9 +83,25 @@
             <p class="pakemon__box-item-height text-center fw-bold mb-0">Height: <span class="height"></span></p>
 
             <p class="pakemon__box-item-weight text-center fw-bold">Weight: <span class="weight"></span></p>
+
+            <button class="pakemon__box-item-bookmark btn btn-danger mt-0 mb-3" type="submit">Bookmark</button>
         </div>
 
     </template>
+
+
+    <template class="bookmark__template">
+
+        <div class="bookmark-box border border-secondary border-2 text ps-3 pb-2 pt-3 mt-3">
+            <h3 class="bookmark-box__title m-0 p-0">bookmark title</h3>
+
+            <button class="bookmark-box__removebtn btn btn-danger mt-1" type="submit">Remove</button>
+        </div>
+
+    </template>
+
+
+
 
     <script src="./js/pokemon.js"></script>
     <script src="./js/movies.js"></script>

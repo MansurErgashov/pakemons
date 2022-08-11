@@ -72,6 +72,9 @@ ul, li {
 .pakemon__box-list-item:nth-child(n+4){
     margin-top: 25px;
 }
+.bookmark-box {
+    border-radius: 10px;
+}
 @media only screen and (max-width: 1200px) {
     .pakemon__box-list {
         display: flex;
