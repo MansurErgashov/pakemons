@@ -13,10 +13,10 @@ const elBookmarkTemp = document.querySelector('.bookmark__template').content
 const elBookmarkList = document.querySelector('.bookmark__list')
 
 
-const pakemonsArray = pokemons.splice(0, 70)
+const pakemonsArray = pokemons.splice(0, 10)
+
 
 let bookmarkedPokemon = []
-
 
 
 // normalizedArray
@@ -147,8 +147,16 @@ userReg(filteredPokemon)
 })
 
 // Bookmark
+if(JSON.parse(localStorage.getItem('obj')).length > 0) {
+    JSON.parse(localStorage.getItem('obj')).forEach(item => {
+        bookmarkedPokemon.push(item)
+    }) 
+    renderBookmarks(bookmarkedPokemon)
+}
+
 elPokemonList.addEventListener("click", function (evt) { 
     let currentBookmarkId = evt.target.dataset.bookmarkId;
+
 
     if (currentBookmarkId) {
         let foundPokemon = normalizedPokemons.find(function(item) {
@@ -166,10 +174,14 @@ elPokemonList.addEventListener("click", function (evt) {
                 bookmarkedPokemon.unshift(foundPokemon)
             }
         }
+    
+        localStorage.setItem('obj', JSON.stringify(bookmarkedPokemon))
         
-        renderBookmarks(bookmarkedPokemon)
+        renderBookmarks(JSON.parse(localStorage.getItem('obj')))
     }
 })
+
+
 
 
 function renderBookmarks(arrayOfMovies) {
@@ -189,7 +201,6 @@ function renderBookmarks(arrayOfMovies) {
     elBookmarkList.appendChild(fragment)
 }
 
-
 elBookmarkList.addEventListener("click", function (evt) {
     let bookmarkedPkemonId = evt.target.dataset.bookmarkedId
     
@@ -197,10 +208,12 @@ elBookmarkList.addEventListener("click", function (evt) {
         let foundBookmarkedPokemon = bookmarkedPokemon.findIndex(function(item) {
             return item.id == bookmarkedPkemonId
         })
-        
+        console.log(bookmarkedPokemon);
         bookmarkedPokemon.splice(foundBookmarkedPokemon, 1);
+        localStorage.setItem('obj', JSON.stringify(bookmarkedPokemon))
+        
     }
-    renderBookmarks(bookmarkedPokemon);
+    renderBookmarks(JSON.parse(localStorage.getItem('obj')));
 })
 
 
